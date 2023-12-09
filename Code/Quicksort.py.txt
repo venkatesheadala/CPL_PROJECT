@@ -1,0 +1,71 @@
+from datetime import datetime
+
+# Class representing a customer order
+class CustomerOrder:
+    def __init__(self, order_id, customer_name, order_date, total_amount):
+        self.order_id = order_id
+        self.customer_name = customer_name
+        self.order_date = order_date
+        self.total_amount = total_amount
+        # Add other fields as needed for your application
+
+# Function to parse date input and store it in datetime object
+def input_date():
+    date_str = input("Enter date in the format YYYY-MM-DD: ")
+    return datetime.strptime(date_str, "%Y-%m-%d")
+
+# Quicksort implementation
+def quicksort(arr, compare):
+    # Base case: if the array has 1 or fewer elements, it is already sorted
+    if len(arr) <= 1:
+        return arr
+    else:
+        # Choose the pivot element (in this case, the first element)
+        pivot = arr[0]
+        # Partition the array into elements less than the pivot and elements greater than or equal to the pivot
+        less = [x for x in arr[1:] if compare(x, pivot) < 0]
+        greater = [x for x in arr[1:] if compare(x, pivot) >= 0]
+        # Recursively apply quicksort to the subarrays and concatenate the results
+        return quicksort(less, compare) + [pivot] + quicksort(greater, compare)
+
+# Example comparison function for customer orders by order date
+def compare_order_by_date(order_a, order_b):
+    # Convert order dates to timestamps and compare
+    time_a = order_a.order_date.timestamp()
+    time_b = order_b.order_date.timestamp()
+    return int(time_a - time_b)
+
+def main():
+    # Get the number of customer orders from the user
+    n = int(input("Enter the number of customer orders: "))
+    orders = []
+
+    print("Enter details for each customer order:")
+    for i in range(n):
+        # Get details for each order from the user
+        order_id = int(input(f"Order {i + 1} ID: "))
+        customer_name = input(f"Order {i + 1} Customer Name: ")
+        order_date = input_date()
+        total_amount = float(input(f"Order {i + 1} Total Amount: "))
+
+        # Create a CustomerOrder object and append it to the list
+        order = CustomerOrder(order_id, customer_name, order_date, total_amount)
+        orders.append(order)
+
+    # Display the original list of customer orders
+    print("\nOriginal list of customer orders by order date:")
+    for i, order in enumerate(orders):
+        print(f"Order {i + 1} ID: {order.order_id}, Customer: {order.customer_name}, "
+              f"Date: {order.order_date.strftime('%Y-%m-%d')}, Amount: ${order.total_amount:.2f}")
+
+    # Sort the list of customer orders using quicksort and the comparison function
+    orders_sorted = quicksort(orders, compare_order_by_date)
+
+    # Display the sorted list of customer orders
+    print("\nSorted list of customer orders by order date:")
+    for i, order in enumerate(orders_sorted):
+        print(f"Order {i + 1} ID: {order.order_id}, Customer: {order.customer_name}, "
+              f"Date: {order.order_date.strftime('%Y-%m-%d')}, Amount: ${order.total_amount:.2f}")
+
+if __name__ == "__main__":
+    main()

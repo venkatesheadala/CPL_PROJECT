@@ -1,0 +1,38 @@
+
+*** Output for both Quicksort.c and Quicksort.py ***
+
+Enter the number of customer orders: 5
+Enter details for each customer order:
+Order 1 ID: 1
+Order 1 Customer Name: ravi
+Enter date in the format YYYY-MM-DD: 2016-05-12
+Order 1 Total Amount: 20
+Order 2 ID: 2
+Order 2 Customer Name: venkatesh
+Enter date in the format YYYY-MM-DD: 2023-10-28
+Order 2 Total Amount: 46
+Order 3 ID: 3
+Order 3 Customer Name: venky
+Enter date in the format YYYY-MM-DD: 2002-07-25
+Order 3 Total Amount: 12
+Order 4 ID: 4
+Order 4 Customer Name: kiran
+Enter date in the format YYYY-MM-DD: 2022-01-22
+Order 4 Total Amount: 68
+Order 5 ID: 5
+Order 5 Customer Name: Eadala
+Enter date in the format YYYY-MM-DD: 2007-08-11
+Order 5 Total Amount: 356
+Original list of customer orders by order date:
+Order 1 ID: 1, Customer: ravi, Date: 2016-05-12, Amount: $20.00
+Order 2 ID: 2, Customer: venkatesh, Date: 2023-10-28, Amount: $46.00
+Order 3 ID: 3, Customer: venky, Date: 2002-07-25, Amount: $12.00
+Order 4 ID: 4, Customer: kiran, Date: 2022-01-22, Amount: $68.00
+Order 5 ID: 5, Customer: Eadala, Date: 2007-08-11, Amount: $356.00
+
+Sorted list of customer orders by order date:
+Order 1 ID: 3, Customer: venky, Date: 2002-07-25, Amount: $12.00
+Order 2 ID: 5, Customer: Eadala, Date: 2007-08-11, Amount: $356.00
+Order 3 ID: 1, Customer: ravi, Date: 2016-05-12, Amount: $20.00
+Order 4 ID: 4, Customer: kiran, Date: 2022-01-22, Amount: $68.00
+Order 5 ID: 2, Customer: venkatesh, Date: 2023-10-28, Amount: $46.00

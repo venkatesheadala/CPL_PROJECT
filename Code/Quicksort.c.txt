@@ -1,0 +1,118 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+// Struct representing a customer order
+typedef struct {
+    int orderID;
+    char customerName[50];
+    struct tm orderDate;  // Using struct tm for date (from time.h)
+    double totalAmount;
+    // Add other fields as needed for your application
+} CustomerOrder;
+
+// Function to parse date input and store it in struct tm
+void inputDate(struct tm *date) {
+    printf("Enter date in the format YYYY-MM-DD: ");
+    scanf("%d-%d-%d", &date->tm_year, &date->tm_mon, &date->tm_mday);
+
+    // Adjustments for struct tm
+    date->tm_year -= 1900;  // Years since 1900
+    date->tm_mon -= 1;      // Months (0-11)
+}
+
+// Function to partition the array
+int partition(void *arr, int low, int high, size_t size, int (*compare)(const void *, const void *)) {
+    void *pivot = malloc(size);
+    memcpy(pivot, (char *)arr + high * size, size);
+
+    int i = low - 1;
+
+    for (int j = low; j < high; ++j) {
+        void *current = malloc(size);
+        memcpy(current, (char *)arr + j * size, size);
+
+        if (compare(current, pivot) < 0) {
+            i++;
+
+            void *temp = malloc(size);
+            memcpy(temp, (char *)arr + i * size, size);
+            memcpy((char *)arr + i * size, (char *)arr + j * size, size);
+            memcpy((char *)arr + j * size, temp, size);
+
+            free(temp);
+        }
+
+        free(current);
+    }
+
+    void *temp = malloc(size);
+    memcpy(temp, (char *)arr + (i + 1) * size, size);
+    memcpy((char *)arr + (i + 1) * size, (char *)arr + high * size, size);
+    memcpy((char *)arr + high * size, temp, size);
+
+    free(pivot);
+    free(temp);
+
+    return i + 1;
+}
+
+// Function to perform QuickSort
+void quickSort(void *arr, int low, int high, size_t size, int (*compare)(const void *, const void *)) {
+    if (low < high) {
+        int pi = partition(arr, low, high, size, compare);
+
+        quickSort(arr, low, pi - 1, size, compare);
+        quickSort(arr, pi + 1, high, size, compare);
+    }
+}
+
+// Example comparison function for customer orders by order date
+int compareOrderByDate(const void *a, const void *b) {
+    time_t timeA = mktime(&(((CustomerOrder *)a)->orderDate));
+    time_t timeB = mktime(&(((CustomerOrder *)b)->orderDate));
+
+    return difftime(timeA, timeB);
+}
+
+int main() {
+    int n;
+    printf("Enter the number of customer orders: ");
+    scanf("%d", &n);
+
+    CustomerOrder *orders = malloc(n * sizeof(CustomerOrder));
+
+    printf("Enter details for each customer order:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Order %d ID: ", i + 1);
+        scanf("%d", &orders[i].orderID);
+
+        printf("Order %d Customer Name: ", i + 1);
+        scanf("%s", orders[i].customerName);
+
+        inputDate(&orders[i].orderDate);
+
+        printf("Order %d Total Amount: ", i + 1);
+        scanf("%lf", &orders[i].totalAmount);
+    }
+
+    printf("\nOriginal list of customer orders by order date:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Order %d ID: %d, Customer: %s, Date: %d-%02d-%02d, Amount: $%.2lf\n", i + 1, orders[i].orderID, orders[i].customerName,
+               orders[i].orderDate.tm_year + 1900, orders[i].orderDate.tm_mon + 1, orders[i].orderDate.tm_mday, orders[i].totalAmount);
+    }
+    printf("\n");
+
+    quickSort(orders, 0, n - 1, sizeof(CustomerOrder), compareOrderByDate);
+
+    printf("Sorted list of customer orders by order date:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Order %d ID: %d, Customer: %s, Date: %d-%02d-%02d, Amount: $%.2lf\n", i + 1, orders[i].orderID, orders[i].customerName,
+               orders[i].orderDate.tm_year + 1900, orders[i].orderDate.tm_mon + 1, orders[i].orderDate.tm_mday, orders[i].totalAmount);
+    }
+
+    free(orders);
+
+    return 0;
+}
